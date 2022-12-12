@@ -18,19 +18,18 @@ public class Main {
 
     private static final DistanceType distanceType = DistanceType.MANHATTAN;
 
+    private static int goodPredictions = 0;
+
     public static void main(String[] args) throws IOException {
 
         KNearestNeighborAlgorithm algorithm = new KNearestNeighborAlgorithm(K);
 
-        DataManager importer = new DataManager();
+        DataManager dataManager = new DataManager();
 
-        Map<FlowerModel, FlowerType> trainingData = importer.getTrainingData();
-        Map<FlowerModel, FlowerType> testingData = importer.getTestingData();
+        Map<FlowerModel, FlowerType> trainingData = dataManager.getTrainingData();
+        Map<FlowerModel, FlowerType> testingData = dataManager.getTestingData();
 
         algorithm.setTrainingData(trainingData);
-
-        System.out.println("Executing the " + K + "-Nearest Neighbors algorithm...");
-        int goodPredictions = 0;
 
         List<PredictionResult> predictionsResults = new ArrayList<>();
 
@@ -47,16 +46,21 @@ public class Main {
             }
         }
 
-        System.out.println("-----");
-        System.out.println("For K=" + K + " and DistanceType " + distanceType + " results are:");
-        System.out.println("     - Total predictions = " + testingData.size() + " | good = " + goodPredictions + " | bad = " + (testingData.size() - goodPredictions));
-        double accuracy = goodPredictions * 1.0 / testingData.size();
-        System.out.println("     - Accuracy = " + accuracy * 100 + "%");
 
-        createAndDisplayConfusionMatrix(predictionsResults);
+        displayAlgorithmResult(testingData.size());
+        displayPredictionsResult(predictionsResults);
     }
 
-    private static void createAndDisplayConfusionMatrix(List<PredictionResult> results){
+    private static void displayAlgorithmResult(int dataSize) {
+        System.out.println("Start Algorithm with:  " + K + "-Nearest Neighbors algorithm...");
+        System.out.println("---------------------------------------------------------------");
+        System.out.println("For K=" + K + " and DistanceType " + distanceType + " results are:");
+        System.out.println("     - Total predictions = " + dataSize + " | Good = " + goodPredictions + " | Bad = " + (dataSize - goodPredictions));
+        double accuracy = goodPredictions * 1.0 / dataSize;
+        System.out.println("     - Accuracy = " + accuracy * 100 + "%");
+    }
+
+    private static void displayPredictionsResult(List<PredictionResult> results) {
         ConfusionMatrix cm = new ConfusionMatrix();
         for (PredictionResult result : results) {
             cm.increaseValue(result.getExpectedType().name(), result.getPredictedType().name(), 1);

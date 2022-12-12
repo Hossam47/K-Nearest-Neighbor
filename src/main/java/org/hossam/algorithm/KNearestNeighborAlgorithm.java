@@ -7,6 +7,7 @@ import org.hossam.utils.DistanceCalculator;
 import org.hossam.utils.DistanceType;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.hossam.utils.DistanceCalculator.calculateDistance;
 
@@ -48,20 +49,21 @@ public class KNearestNeighborAlgorithm {
 
     private <T> T flowerClassify(List<T> list) {
 
-        Map<T, Integer> map = new HashMap<>();
+        Map<T, Integer> numFlowerAppearsList = new HashMap<>();
 
         for (T t : list) {
-            Integer val = map.get(t);
-            map.put(t, val == null ? 1 : val + 1);
+            Integer val = numFlowerAppearsList.get(t);
+            numFlowerAppearsList.put(t, val == null ? 1 : val + 1);
         }
 
-        Map.Entry<T, Integer> max = null;
+        Map.Entry<T, Integer> mostFlowersAppears = null;
 
-        for (Map.Entry<T, Integer> e : map.entrySet()) {
-            if (max == null || e.getValue() > max.getValue())
-                max = e;
+        for (Map.Entry<T, Integer> entry : numFlowerAppearsList.entrySet()) {
+            if (mostFlowersAppears == null || entry.getValue() > mostFlowersAppears.getValue())
+                mostFlowersAppears = entry;
         }
 
-        return max.getKey();
+        return mostFlowersAppears.getKey();
     }
+
 }

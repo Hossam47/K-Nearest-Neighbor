@@ -1,6 +1,6 @@
 package org.hossam.utils;
 
 public enum DistanceType {
-    EUCLIDIENNE,
+    EUCLIDEAN,
     MANHATTAN,
 }

@@ -42,6 +42,6 @@ public class DataManager {
     }
 
     public Map<FlowerModel, FlowerType> getTestingData() throws IOException {
-        return getDataFromFile("test.data");
+        return getDataFromFile("testing.data");
     }
 }

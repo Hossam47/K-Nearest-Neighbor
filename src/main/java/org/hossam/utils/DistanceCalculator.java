@@ -14,7 +14,7 @@ import java.util.Comparator;
 
      public static  double calculateDistance(DistanceType type, FlowerModel from, FlowerModel to) {
          switch (type) {
-             case EUCLIDIENNE:
+             case EUCLIDEAN:
                  return computeEuclideanDistance(from, to);
              case MANHATTAN:
                  return computeManhattanDistance(from, to);
