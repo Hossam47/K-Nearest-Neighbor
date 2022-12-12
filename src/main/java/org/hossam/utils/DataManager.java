@@ -13,16 +13,20 @@ import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DataImporter {
+public class DataManager {
 
-    private Map<FlowerModel, FlowerType> importData(String fileName) throws IOException {
+    private Map<FlowerModel, FlowerType> getDataFromFile(String fileName) throws IOException {
+
         File csvData = new File(fileName);
+
         CSVParser parser = CSVParser.parse(csvData, Charset.defaultCharset(), CSVFormat.RFC4180);
 
         Map<FlowerModel, FlowerType> data = new HashMap<>();
+
         for (CSVRecord csvRecord : parser) {
+
             FlowerModel flowerModel = new FlowerModel();
-            // Warning: the order matter ! See the CSV file description
+
             flowerModel.setSepalLength(Double.parseDouble(csvRecord.get(0)));
             flowerModel.setSepalWidth(Double.parseDouble(csvRecord.get(1)));
             flowerModel.setPetalLength(Double.parseDouble(csvRecord.get(2)));
@@ -33,11 +37,11 @@ public class DataImporter {
         return data;
     }
 
-    public Map<FlowerModel, FlowerType> getTrainingSet() throws IOException {
-        return importData("training.data");
+    public Map<FlowerModel, FlowerType> getTrainingData() throws IOException {
+        return getDataFromFile("training.data");
     }
 
-    public Map<FlowerModel, FlowerType> getTestSet() throws IOException {
-        return importData("test.data");
+    public Map<FlowerModel, FlowerType> getTestingData() throws IOException {
+        return getDataFromFile("test.data");
     }
 }

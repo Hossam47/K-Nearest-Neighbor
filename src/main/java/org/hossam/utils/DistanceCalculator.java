@@ -1,27 +1,28 @@
-package org.hossam.algorithm;
+package org.hossam.utils;
 
+import org.hossam.algorithm.Result;
 import org.hossam.model.FlowerModel;
 
 import java.util.Comparator;
 
- class DistanceCalculator implements Comparator<Result> {
+ public class DistanceCalculator implements Comparator<Result> {
 
     @Override
     public int compare(Result a, Result b) {
-        return a.getDistance() < b.getDistance() ? -1 : a.getDistance() == b.getDistance() ? 0 : 1;
+        return Double.compare(a.getDistance(), b.getDistance());
     }
 
-     public static  double calculDistance(DistanceType type, FlowerModel from, FlowerModel to) {
+     public static  double calculateDistance(DistanceType type, FlowerModel from, FlowerModel to) {
          switch (type) {
              case EUCLIDIENNE:
-                 return computeEuclidianDistance(from, to);
+                 return computeEuclideanDistance(from, to);
              case MANHATTAN:
                  return computeManhattanDistance(from, to);
          }
          return 0.0;
      }
 
-     public static double computeEuclidianDistance(FlowerModel from, FlowerModel to) {
+     public static double computeEuclideanDistance(FlowerModel from, FlowerModel to) {
          double distance = 0.0;
          distance += Math.pow(from.getSepalLength() - to.getSepalLength(), 2);
          distance += Math.pow(from.getSepalWidth() - to.getSepalWidth(), 2);

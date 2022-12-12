@@ -1,4 +1,4 @@
-package org.hossam.algorithm;
+package org.hossam.utils;
 
 public enum DistanceType {
     EUCLIDIENNE,

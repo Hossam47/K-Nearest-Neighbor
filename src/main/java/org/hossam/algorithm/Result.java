@@ -2,7 +2,7 @@ package org.hossam.algorithm;
 
 import org.hossam.model.FlowerType;
 
-class Result {
+public class Result {
 
     private double distance;
     private FlowerType flowerType;
@@ -12,7 +12,7 @@ class Result {
         this.flowerType = flowerType;
     }
 
-     double getDistance() {
+     public double getDistance() {
         return distance;
     }
      FlowerType getFlowerType() {

@@ -1,12 +1,12 @@
 package org.hossam;
 
 import com.github.habernal.confusionmatrix.ConfusionMatrix;
-import org.hossam.algorithm.DistanceType;
-import org.hossam.algorithm.KNNAlgorithm;
+import org.hossam.utils.DistanceType;
+import org.hossam.algorithm.KNearestNeighborAlgorithm;
 import org.hossam.algorithm.PredictionResult;
 import org.hossam.model.FlowerModel;
 import org.hossam.model.FlowerType;
-import org.hossam.utils.DataImporter;
+import org.hossam.utils.DataManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,37 +20,37 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        KNNAlgorithm algorithm = new KNNAlgorithm(K);
+        KNearestNeighborAlgorithm algorithm = new KNearestNeighborAlgorithm(K);
 
-        DataImporter importer = new DataImporter();
+        DataManager importer = new DataManager();
 
-        Map<FlowerModel, FlowerType> trainingSet = importer.getTrainingSet();
-        Map<FlowerModel, FlowerType> testSet = importer.getTestSet();
+        Map<FlowerModel, FlowerType> trainingData = importer.getTrainingData();
+        Map<FlowerModel, FlowerType> testingData = importer.getTestingData();
 
-        algorithm.setTrainingSet(trainingSet);
+        algorithm.setTrainingData(trainingData);
 
         System.out.println("Executing the " + K + "-Nearest Neighbors algorithm...");
         int goodPredictions = 0;
 
         List<PredictionResult> predictionsResults = new ArrayList<>();
 
-        for (Map.Entry<FlowerModel, FlowerType> entry : testSet.entrySet()) {
+        for (Map.Entry<FlowerModel, FlowerType> entry : testingData.entrySet()) {
 
-            FlowerType prediction = algorithm.predict(entry.getKey(), distanceType);
+            FlowerType flowerPrediction = algorithm.runAlgorithm(entry.getKey(), distanceType);
 
-            PredictionResult result = new PredictionResult(entry.getValue(), prediction);
+            PredictionResult result = new PredictionResult(entry.getValue(), flowerPrediction);
 
             predictionsResults.add(result);
 
-            if (prediction == entry.getValue()) {
+            if (flowerPrediction == entry.getValue()) {
                 goodPredictions++;
             }
         }
 
         System.out.println("-----");
         System.out.println("For K=" + K + " and DistanceType " + distanceType + " results are:");
-        System.out.println("     - Total predictions = " + testSet.size() + " | good = " + goodPredictions + " | bad = " + (testSet.size() - goodPredictions));
-        double accuracy = goodPredictions * 1.0 / testSet.size();
+        System.out.println("     - Total predictions = " + testingData.size() + " | good = " + goodPredictions + " | bad = " + (testingData.size() - goodPredictions));
+        double accuracy = goodPredictions * 1.0 / testingData.size();
         System.out.println("     - Accuracy = " + accuracy * 100 + "%");
 
         createAndDisplayConfusionMatrix(predictionsResults);
